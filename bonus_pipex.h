@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/19 19:13:47 by hipham            #+#    #+#             */
-/*   Updated: 2024/01/29 19:44:11 by hipham           ###   ########.fr       */
+/*   Updated: 2024/02/05 17:16:07 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 int		ft_open(char *argv, int in_out);
 void	error_message(char *argv, char *text);
 void	perror_exit(char *str);
-void	ft_putstr_fd(char *s, int fd);
+int		put_error_string(char *str);
 
 // path parsing
 char	*get_env(char **envp);
@@ -33,12 +33,13 @@ char	*get_dir(char *cmd, char **envp);
 void	ft_exec(char *argv, char **envp);
 
 // pipex bonus
-void	start_process(int argc, char **argv, char *envp[]);
-void	middle_proccesses(char *argv, char *envp[]);
-void	end_process(int argc, char **argv, char *envp[]);
+// void	middle_proccesses(char *argv, char *envp[]);
+// void	child2_process(int argc, char **argv, char *envp[]);
+// void	child1_process(int argc, char **argv, char *envp[]);
+// void	parent_process(pid_t pid, int argc,   char **argv, char **envp);
 
 // here_doc
 void	limiter_handling(char *arg2, int *pipefd);
-void	heredoc_proccess(char *arg2, char *argv, char **envp);
+void	heredoc_proccess(char *arg2);
 
 #endif

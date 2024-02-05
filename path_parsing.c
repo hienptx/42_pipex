@@ -6,36 +6,34 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 14:26:45 by hipham            #+#    #+#             */
-/*   Updated: 2024/01/29 18:54:00 by hipham           ###   ########.fr       */
+/*   Updated: 2024/02/01 16:00:42 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
 #include "bonus_pipex.h"
 #include "libft/includes/libft.h"
+#include "pipex.h"
 
 char	*get_env(char **envp)
 {
 	int		i;
 	char	**my_env;
+	char	*temp;
 
 	i = 0;
-	while (envp[i] != NULL)
+	my_env = NULL;
+	while (envp[i++] != NULL)
 	{
 		if (ft_strnstr(envp[i], "PATH", 4))
+		{
 			my_env = ft_split(envp[i], '=');
-		i++;
+			break ;
+		}
 	}
-	if (my_env != NULL)
-	{
-		free(my_env[0]);
-		return (my_env[1]);
-	}
-	else
-	{
-		ft_free(my_env);
-		return (NULL);
-	}
+	temp = my_env[1];
+	free(my_env[0]);
+	free(my_env);
+	return (temp);
 }
 
 char	*get_dir(char *cmd, char **envp)
@@ -49,6 +47,7 @@ char	*get_dir(char *cmd, char **envp)
 	i = -1;
 	env_path = get_env(envp);
 	dir = ft_split(env_path, ':');
+	free(env_path);
 	while (dir[++i])
 	{
 		full_path = ft_strjoin(dir[i], "/");

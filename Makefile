@@ -6,7 +6,7 @@
 #    By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/27 16:27:01 by hipham            #+#    #+#              #
-#    Updated: 2024/01/29 20:15:14 by hipham           ###   ########.fr        #
+#    Updated: 2024/02/05 18:43:18 by hipham           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@
 # operating on.
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g -I./libft -I./includes
+CFLAGS = -Wall -Wextra -Werror -g -I./libft -I./includes 
+# LEAKS = -L../LeakSanitizer -llsan -lc++ -Wno-gnu-include-next -I ../LeakSanitize
 
 SRCS = 	pipex.c pipex_utils.c path_parsing.c
 BONUS_SRCS = bonus_pipex.c pipex_utils.c path_parsing.c bonus_pipex_heredoc.c 

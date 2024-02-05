@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/10 17:47:00 by hipham            #+#    #+#             */
-/*   Updated: 2023/10/21 19:18:00 by hipham           ###   ########.fr       */
+/*   Updated: 2024/01/30 18:55:59 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_bzero(void *s, size_t n)
 
 	i = 0;
 	if (n == 0)
-		;
+		return ;
 	while (i < n)
 	{
 		((unsigned char *)s)[i] = 0;

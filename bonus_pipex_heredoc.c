@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/29 18:49:55 by hipham            #+#    #+#             */
-/*   Updated: 2024/01/29 20:41:04 by hipham           ###   ########.fr       */
+/*   Updated: 2024/02/02 20:06:47 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,21 @@ void	limiter_handling(char *arg2, int *pipefd)
 	{
 		ft_putstr_fd("pipe heredoc> ", 0);
 		str = get_next_line(0);
-		if (ft_strnstr(str, arg2, ft_strlen(arg2)))
+		if (str != NULL)
 		{
+			if (ft_strnstr(str, arg2, ft_strlen(arg2)))
+			{
+				free(str);
+				break ;
+			}
+			ft_putstr_fd(str, pipefd[1]);
 			free(str);
-			break ;
 		}
-		ft_putstr_fd(str, pipefd[1]);
-		free(str);
 	}
 	exit(0);
 }
 
-void	heredoc_proccess(char *arg2, char *argv, char **envp)
+void	heredoc_proccess(char *arg2)
 {
 	pid_t	pid;
 	int		pipefd[2];
@@ -47,7 +50,6 @@ void	heredoc_proccess(char *arg2, char *argv, char **envp)
 	{
 		close(pipefd[0]);
 		limiter_handling(arg2, pipefd);
-		ft_exec(argv, envp);
 		exit(EXIT_SUCCESS);
 	}
 	else
