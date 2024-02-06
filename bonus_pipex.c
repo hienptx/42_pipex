@@ -6,7 +6,7 @@
 /*   By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/27 21:39:32 by hipham            #+#    #+#             */
-/*   Updated: 2024/02/05 18:52:11 by hipham           ###   ########.fr       */
+/*   Updated: 2024/02/06 18:49:31 by hipham           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	middle_proccesses(char *argv, char *envp[])
 	if (pipe(pipefd) == -1)
 		perror_exit("pipe");
 	pid = fork();
-	if (pid < 0)
+	if (pid == -1)
 		perror_exit("fork");
 	if (pid == 0)
 	{
@@ -30,12 +30,9 @@ static void	middle_proccesses(char *argv, char *envp[])
 		ft_exec(argv, envp);
 		exit(EXIT_SUCCESS);
 	}
-	else
-	{
-		close(pipefd[1]);
-		dup2(pipefd[0], 0);
-		waitpid(pid, NULL, 0);
-	}
+	close(pipefd[1]);
+	dup2(pipefd[0], 0);
+	waitpid(pid, NULL, 0);
 }
 
 static void	start_process(int argc, char **argv, char *envp[])
@@ -57,14 +54,14 @@ static void	start_process(int argc, char **argv, char *envp[])
 		i = 2;
 		fd = ft_open(argv[1], 0);
 		dup2(fd, 0);
+		close(fd);
 		fdo = ft_open(argv[argc - 1], 1);
 		dup2(fdo, 1);
-		close(fd);
+		close(fdo);
 	}
 	while (i < argc - 2)
 		middle_proccesses(argv[i++], envp);
 	ft_exec(argv[argc - 2], envp);
-	close(fdo);
 }
 
 int	main(int argc, char *argv[], char *envp[])

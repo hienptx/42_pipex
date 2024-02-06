@@ -6,7 +6,7 @@
 #    By: hipham <hipham@student.42heilbronn.de>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/27 16:27:01 by hipham            #+#    #+#              #
-#    Updated: 2024/02/05 18:43:18 by hipham           ###   ########.fr        #
+#    Updated: 2024/02/06 18:15:45 by hipham           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -57,11 +57,20 @@ fclean: clean
 
 re: fclean all
 
-# ./pipex test.txt "sort -r" "grep 87" "wc -l" outfile
-# < test.txt "sort -r" | "grep 87" | "wc -l" > outfile
+# ./pipex pipex.h "sort -r" "grep int" "wc -l" outfile
+# < pipex.h  sort -r | grep int | wc -l > outfile
 
-# ./pipex test.txt "sleep 3" "sort -r" "grep i" "sleep 3" "wc -l" outfile
-# < test.txt sleep 3 | sort -r | grep i | sleep 3 | wc -l > outfile
+# ./pipex pipex.h "sleep 3" "sort -r" "grep int" "sleep 3" "wc -l" outfile
+# < pipex.h sleep 3 | sort -r | grep int | sleep 3 | wc -l > outfile
 
 # ./pipex test.txt "cat test.txt" "grep 90" "sort -r" outfile
 # < test.txt | cat test.txt | grep 90 | sort -r > outfile
+
+# ./pipex Makefile "ls -l" "sleep 3" "sort -r" output
+# < Makefile ls -l | sleep 3 | sort -r > output
+
+# ./pipex Makefile "sleep 3" "ls -l" "sort -r" output
+# < Makefile sleep 3 | ls -l | sort -r > output
+
+# ./pipex here_doc stop "sleep 3" "ls -l" "sort -r" output
+# sleep 3 << stop | ls -l | wc -l >> output
