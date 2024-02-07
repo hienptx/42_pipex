@@ -19,6 +19,7 @@
 # include <string.h>
 # include <sys/errno.h>
 # include <unistd.h>
+# include <sys/wait.h> 
 
 // pipex utilities
 int		ft_open(char *argv, int in_out);

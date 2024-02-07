@@ -72,5 +72,5 @@ re: fclean all
 # ./pipex Makefile "sleep 3" "ls -l" "sort -r" outfile
 # < Makefile sleep 3 | ls -l | sort -r > outfile
 
-# ./pipex here_doc stop "sleep 3" "ls -l" "sort -r" outfile
+# ./pipex here_doc stop "sleep 3" "ls -l" "wc -l" outfile
 # sleep 3 << stop | ls -l | wc -l >> outfile

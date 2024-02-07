@@ -20,6 +20,7 @@
 # include <sys/errno.h>
 # include <sys/wait.h>
 # include <unistd.h>
+#include <sys/types.h>
 
 // pipex utilities
 int		ft_open(char *argv, int in_out);
@@ -40,6 +41,6 @@ void	ft_exec(char *argv, char **envp);
 
 // here_doc
 void	limiter_handling(char *arg2, int *pipefd);
-void	heredoc_proccess(char *arg2);
+void	heredoc_process(char *arg2);
 
 #endif

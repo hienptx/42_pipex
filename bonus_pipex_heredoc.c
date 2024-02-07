@@ -36,7 +36,7 @@ void	limiter_handling(char *arg2, int *pipefd)
 	exit(0);
 }
 
-void	heredoc_proccess(char *arg2)
+void	heredoc_process(char *arg2)
 {
 	pid_t	pid;
 	int		pipefd[2];
