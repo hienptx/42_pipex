@@ -1,1 +1,2 @@
-       0
+int		put_error_string(char *str);
+int		ft_open(char *argv, int in_out);

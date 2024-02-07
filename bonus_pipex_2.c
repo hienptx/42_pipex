@@ -13,67 +13,52 @@
 #include "bonus_pipex.h"
 #include "libft/includes/libft.h"
 
-static void	middle_proccesses(int *pipefd, char *argv, char *envp[])
-{
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-		perror_exit("fork");
-	if (pid == 0)
-	{
-		// Child process
-		close(pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[1]);
-		ft_exec(argv, envp);
-		exit(EXIT_SUCCESS);
-	}
-	else
-	{
-		// Parent process
-		close(pipefd[1]); // Close the write end of the pipe in the parent
-		dup2(pipefd[0], STDIN_FILENO);
-		close(pipefd[0]);
-		waitpid(pid, NULL, 0);
-	}
-}
-
 static void	child2_process(int argc, char **argv, char *envp[])
 {
 	int	fdo;
 
-	if (ft_strnstr(argv[1], "here_doc", 8))
-		fdo = ft_open(argv[argc - 1], 2);
-	else
-		fdo = ft_open(argv[argc - 1], 1);
+	fdo = ft_open(argv[argc - 1], 1);
 	dup2(fdo, STDOUT_FILENO);
 	ft_exec(argv[argc - 2], envp);
 	close(fdo);
 	exit(EXIT_SUCCESS);
 }
 
-static void	child1_process(int *pipefd, int argc, char **argv, char *envp[])
+static void	child1_process(char **argv, char *envp[])
 {
-	int	fd;
-	int	i;
+	int	fdi;
 
-	close(pipefd[0]);
-	if (ft_strnstr(argv[1], "here_doc", 8))
+	fdi = ft_open(argv[1], 0);
+	dup2(fdi, STDIN_FILENO);
+	ft_exec(argv[2], envp);
+	close(fdi);
+	exit(EXIT_SUCCESS);
+}
+
+static void fork_loop(int argc, char **argv, char **envp)
+{
+	int i;
+	pid_t pids;
+	int	pipefd[2];
+
+	i = 2;
+	while(++i < argc - 2)
 	{
-		i = 3;
-		heredoc_proccess(argv[2]);
-	}
-	else
-	{
-		i = 2;
-		fd = ft_open(argv[1], 0);
-		dup2(fd, 0);
-		close(fd);
-	}
-	while (i < argc - 2)
-	{
-		middle_proccesses(pipefd, argv[i++], envp);
+		if (pipe(pipefd) == -1)
+			perror_exit("pipe");
+		pids = fork();
+		if (pids < 0)
+			perror_exit("fork");
+		if (pids == 0)
+		{
+			close(pipefd[0]);
+			dup2(pipefd[1], 1);
+			ft_exec(argv[i], envp);
+			exit(EXIT_SUCCESS);
+		}
+		close(pipefd[1]);
+		dup2(pipefd[0], 0);
+		//waitpid(pids, NULL, 0);
 	}
 }
 
@@ -81,13 +66,14 @@ static void	parent_process(pid_t pid, int argc, char **argv, char **envp)
 {
 	pid_t	pid2;
 
+	fork_loop(argc, argv, envp);
 	pid2 = fork();
 	if (pid2 == -1)
 		perror_exit("fork");
 	if (pid2 == 0)
 		child2_process(argc, argv, envp);
-	waitpid(pid2, NULL, 0);
 	waitpid(pid, NULL, 0);
+	waitpid(pid2, NULL, 0);
 }
 
 int	main(int argc, char *argv[], char *envp[])
@@ -95,17 +81,21 @@ int	main(int argc, char *argv[], char *envp[])
 	pid_t	pid;
 	int		pipefd[2];
 
-	if (argc < 5)
-		put_error_string("./pipex infile \"cmd1\"... \"cmdn\" outfile\n");
 	if (ft_strnstr(argv[1], "here_doc", 8) && argc < 6)
 		put_error_string("./pipex here_doc LIMITER cmd cmd1 file\n");
+	if (argc < 5)
+		put_error_string("./pipex infile \"cmd1\"... \"cmdn\" outfile\n");
 	if (pipe(pipefd) == -1)
 		perror_exit("pipe");
 	pid = fork();
 	if (pid == -1)
 		perror_exit("fork");
 	if (pid == 0)
-		child1_process(pipefd, argc, argv, envp);
+	{
+		close(pipefd[0]);
+		dup2(pipefd[1], STDOUT_FILENO);
+		child1_process(argv, envp);
+	}
 	close(pipefd[1]);
 	dup2(pipefd[0], STDIN_FILENO);
 	parent_process(pid, argc, argv, envp);

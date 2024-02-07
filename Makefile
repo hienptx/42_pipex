@@ -21,7 +21,7 @@ CFLAGS = -Wall -Wextra -Werror -g -I./libft -I./includes
 # LEAKS = -L../LeakSanitizer -llsan -lc++ -Wno-gnu-include-next -I ../LeakSanitize
 
 SRCS = 	pipex.c pipex_utils.c path_parsing.c
-BONUS_SRCS = bonus_pipex.c pipex_utils.c path_parsing.c bonus_pipex_heredoc.c 
+BONUS_SRCS = bonus_pipex_2.c pipex_utils.c path_parsing.c bonus_pipex_heredoc.c 
 
 HEADERS = pipex.h bonus_pipex.h
 LIBFT_PATH = libft
@@ -66,11 +66,11 @@ re: fclean all
 # ./pipex test.txt "cat test.txt" "grep 90" "sort -r" outfile
 # < test.txt | cat test.txt | grep 90 | sort -r > outfile
 
-# ./pipex Makefile "ls -l" "sleep 3" "sort -r" output
-# < Makefile ls -l | sleep 3 | sort -r > output
+# ./pipex Makefile "ls -l" "sleep 3" "sort -r" outfile
+# < Makefile ls -l | sleep 3 | sort -r > outfile
 
-# ./pipex Makefile "sleep 3" "ls -l" "sort -r" output
-# < Makefile sleep 3 | ls -l | sort -r > output
+# ./pipex Makefile "sleep 3" "ls -l" "sort -r" outfile
+# < Makefile sleep 3 | ls -l | sort -r > outfile
 
-# ./pipex here_doc stop "sleep 3" "ls -l" "sort -r" output
-# sleep 3 << stop | ls -l | wc -l >> output
+# ./pipex here_doc stop "sleep 3" "ls -l" "sort -r" outfile
+# sleep 3 << stop | ls -l | wc -l >> outfile
