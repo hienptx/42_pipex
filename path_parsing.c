@@ -14,11 +14,11 @@
 #include "libft/includes/libft.h"
 #include "pipex.h"
 
-char	*get_env(char **envp)
+char *get_env(char **envp)
 {
-	int		i;
-	char	**my_env;
-	char	*temp;
+	int i;
+	char **my_env;
+	char *temp;
 
 	i = 0;
 	my_env = NULL;
@@ -27,7 +27,7 @@ char	*get_env(char **envp)
 		if (ft_strnstr(envp[i], "PATH", 4))
 		{
 			my_env = ft_split(envp[i], '=');
-			break ;
+			break;
 		}
 	}
 	temp = my_env[1];
@@ -36,13 +36,13 @@ char	*get_env(char **envp)
 	return (temp);
 }
 
-char	*get_dir(char *cmd, char **envp)
+char *get_dir(char *cmd, char **envp)
 {
-	char	*env_path;
-	char	**dir;
-	char	*full_path;
-	char	*ready;
-	int		i;
+	char *env_path;
+	char **dir;
+	char *full_path;
+	char *ready;
+	int i;
 
 	i = -1;
 	env_path = get_env(envp);
@@ -64,10 +64,44 @@ char	*get_dir(char *cmd, char **envp)
 	return (NULL);
 }
 
-void	ft_exec(char *argv, char **envp)
+void ft_exec_cat_urandom()
 {
-	char	**cmd;
-	char	*dir;
+	int fd_urandom = open("/dev/urandom", O_RDONLY);
+	if (fd_urandom == -1)
+	{
+		perror("open");
+		exit(EXIT_FAILURE);
+	}
+	dup2(fd_urandom, STDOUT_FILENO);
+	close(fd_urandom);
+	exit(EXIT_SUCCESS);
+}
+// void ft_exec(char *argv, char **envp)
+// {
+// 	char **cmd;
+// 	char *dir;
+
+// 	cmd = ft_split(argv, ' ');
+// 	dir = get_dir(cmd[0], envp);
+// 	if (dir == NULL)
+// 	{
+// 		error_message(cmd[0], "zsh: command not found: ");
+// 		ft_free(cmd);
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	if (execve(dir, cmd, envp) == -1)
+// 	{
+// 		perror("execve");
+// 		ft_free(cmd);
+// 		exit(EXIT_FAILURE);
+// 	}
+// 	ft_free(cmd);
+// }
+
+void ft_exec(char *argv, char **envp)
+{
+	char **cmd;
+	char *dir;
 
 	cmd = ft_split(argv, ' ');
 	dir = get_dir(cmd[0], envp);
@@ -77,6 +111,8 @@ void	ft_exec(char *argv, char **envp)
 		ft_free(cmd);
 		exit(EXIT_FAILURE);
 	}
+	if (ft_strncmp(cmd[0], "cat", 3) == 0 && ft_strncmp(cmd[1], "/dev/urandom", 11) == 0)
+		ft_exec_cat_urandom();
 	if (execve(dir, cmd, envp) == -1)
 	{
 		perror("execve");

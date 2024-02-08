@@ -24,14 +24,17 @@ static void	child2_process(char **argv, char *envp[])
 	exit(EXIT_SUCCESS);
 }
 
-static void	child1_process(char **argv, char *envp[])
+static void	child1_process(int *pipefd, char **argv, char *envp[])
 {
 	int	fdi;
 
+	close(pipefd[0]);
+	dup2(pipefd[1], STDOUT_FILENO);
+	close(pipefd[1]);
 	fdi = ft_open(argv[1], 0);
 	dup2(fdi, STDIN_FILENO);
-	ft_exec(argv[2], envp);
 	close(fdi);
+	ft_exec(argv[2], envp);
 	exit(EXIT_SUCCESS);
 }
 
@@ -63,9 +66,7 @@ int	main(int argc, char *argv[], char *envp[])
 		perror_exit("fork");
 	if (pid == 0)
 	{
-		close(pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
-		child1_process(argv, envp);
+		child1_process(pipefd, argv, envp);
 	}
 	parent_process(pipefd, argv, envp);
 	waitpid(pid, NULL, 0);

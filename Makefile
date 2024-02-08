@@ -21,7 +21,7 @@ CFLAGS = -Wall -Wextra -Werror -g -I./libft -I./includes
 # LEAKS = -L../LeakSanitizer -llsan -lc++ -Wno-gnu-include-next -I ../LeakSanitize
 
 SRCS = 	pipex.c pipex_utils.c path_parsing.c
-BONUS_SRCS = bonus_pipex_2.c pipex_utils.c path_parsing.c bonus_pipex_heredoc.c 
+BONUS_SRCS = bonus_pipex.c pipex_utils.c path_parsing.c bonus_pipex_heredoc.c 
 
 HEADERS = pipex.h bonus_pipex.h
 LIBFT_PATH = libft
@@ -74,3 +74,6 @@ re: fclean all
 
 # ./pipex here_doc stop "sleep 3" "ls -l" "wc -l" outfile
 # sleep 3 << stop | ls -l | wc -l >> outfile
+
+# ./pipex pipex.h "cat /dev/urandom" "ls -l" "sleep 3" outfile
+# < pipex.h cat /dev/urandom | ls -l | sleep 3 > outfile

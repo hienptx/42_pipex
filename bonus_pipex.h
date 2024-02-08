@@ -11,27 +11,27 @@
 /* ************************************************************************** */
 
 #ifndef BONUS_PIPEX_H
-# define BONUS_PIPEX_H
+#define BONUS_PIPEX_H
 
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/errno.h>
-# include <sys/wait.h>
-# include <unistd.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <sys/errno.h>
+#include <sys/wait.h>
+#include <unistd.h>
 #include <sys/types.h>
 
 // pipex utilities
-int		ft_open(char *argv, int in_out);
-void	error_message(char *argv, char *text);
-void	perror_exit(char *str);
-int		put_error_string(char *str);
+int ft_open(char *argv, int in_out);
+void error_message(char *argv, char *text);
+void perror_exit(char *str);
+int put_error_string(char *str);
 
 // path parsing
-char	*get_env(char **envp);
-char	*get_dir(char *cmd, char **envp);
-void	ft_exec(char *argv, char **envp);
+char *get_env(char **envp);
+char *get_dir(char *cmd, char **envp);
+void ft_exec(char *argv, char **envp);
 
 // pipex bonus
 // void	middle_proccesses(char *argv, char *envp[]);
@@ -40,7 +40,7 @@ void	ft_exec(char *argv, char **envp);
 // void	parent_process(pid_t pid, int argc,   char **argv, char **envp);
 
 // here_doc
-void	limiter_handling(char *arg2, int *pipefd);
-void	heredoc_process(char *arg2);
+void limiter_handling(char *arg2, int *pipefd);
+void heredoc_process(char *arg2);
 
 #endif
