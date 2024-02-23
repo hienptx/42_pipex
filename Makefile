@@ -57,6 +57,7 @@ fclean: clean
 
 re: fclean all
 
+// PIPEX TESTS LIST
 # ./pipex pipex.h "sort -r" "grep int" "wc -l" outfile
 # < pipex.h  sort -r | grep int | wc -l > outfile
 
